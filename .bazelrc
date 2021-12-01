@@ -1,0 +1,1 @@
+run --ui_event_filters=-debug --noshow_progress
