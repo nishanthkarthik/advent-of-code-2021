@@ -3,8 +3,8 @@ load("@bazel_tools//tools/build_defs/repo:git.bzl", "git_repository")
 
 git_repository(
     name = "rules_haskell",
-    commit = "eec33928e7ee2337a8d01ab964cb556353345696",
-    shallow_since = "1637317693 +0000",
+    commit = "a7241fa64c7cd36462a1f6ac4c660d1247d5e07b",
+    shallow_since = "1638457329 +0000",
     remote = "https://github.com/tweag/rules_haskell.git",
 )
 
@@ -19,5 +19,5 @@ load(
 )
 
 rules_haskell_toolchains(
-    version = "8.10.3",
+    version = "9.2.1",
 )
