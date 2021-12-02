@@ -1,37 +1,30 @@
-import Data.Complex
+data Vec2i = Integer :+ Integer deriving (Eq, Show)
 
-data Direction = Forward | Down | Up deriving (Eq, Show)
+infixl 6 ++:
+(a :+ b) ++: (c :+ d) = (a + c) :+ (b + d)
 
-readDirection :: String -> Direction
-readDirection "forward" = Forward
-readDirection "down" = Down
-readDirection "up" = Up
-
-data Step = Step Direction Integer deriving (Eq, Show)
-
-readInput :: IO [Step]
+readInput :: IO [Vec2i]
 readInput = do
     text <- readFile "2/input.txt"
-    return $ map (\(a:b:[]) -> Step (readDirection a) (read b :: Integer)) $ map words $ lines text
+    return $ map (parseWords . words) $ lines text
+        where
+            parseWords (a : b : []) = direction a (read b :: Integer)
+            direction x i = case x of
+                "forward" -> i :+ 0
+                "up" -> 0 :+ (-i)
+                "down" -> 0 :+ i
 
-stepToVec :: Step -> Complex Double
-stepToVec (Step Forward x) = fromInteger x :+ 0.0
-stepToVec (Step Up x) = 0.0 :+ fromInteger (-x)
-stepToVec (Step Down x) = 0.0 :+ fromInteger (x)
-
-finalPosition :: [Step] -> Complex Double
-finalPosition = foldl1 (+) . map stepToVec
-
-finalPositionwithAim :: [Step] -> Complex Double
-finalPositionwithAim = snd . foldl withAim' (0.0, 0.0 :+ 0.0) . map stepToVec
+finalPositionwithAim :: [Vec2i] -> Vec2i
+finalPositionwithAim = snd . foldl withAim' (0, 0 :+ 0)
     where
-        withAim' :: (Double, Complex Double) -> Complex Double -> (Double, Complex Double)
-        withAim' (aim, pos) (real :+ imag) = (aim + imag, pos + (real :+ aim * real))
+        withAim' :: (Integer, Vec2i) -> Vec2i -> (Integer, Vec2i)
+        withAim' (aim, pos) (a :+ b) = (aim + b, pos ++: (a :+ (aim * a)))
 
 main = do
     i <- readInput
-    let heading = finalPosition i
-    print $ round $ (realPart heading) * (imagPart heading)
-    let headingWithAim = finalPositionwithAim i
-    print $ round $ (realPart headingWithAim) *(imagPart headingWithAim)
+    let
+        solution :: Vec2i -> Integer
+        solution (a :+ b) = a * b
+    print $ solution $ foldl1 (++:) i
+    print $ solution $ finalPositionwithAim i
     return ()
