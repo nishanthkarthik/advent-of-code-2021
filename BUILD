@@ -1,8 +1,10 @@
-load("@rules_haskell//haskell:defs.bzl", "haskell_binary")
+load("@rules_haskell//haskell:defs.bzl", "haskell_binary", "haskell_toolchain_library")
+
+STACKAGE_PACKAGES = ["base", "text", "containers"]
 
 [haskell_binary(
     name = "day{}".format(i),
     srcs = ["{}/Main.hs".format(i)],
-    deps = ["//library:base", "//library:containers", "//library:text"],
+    deps = ["@stackage//:{}".format(pkg) for pkg in STACKAGE_PACKAGES],
     data = ["{}/input.txt".format(i)],
 ) for i in range(1, 1 + 4)]

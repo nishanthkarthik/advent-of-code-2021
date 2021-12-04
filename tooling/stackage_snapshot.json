@@ -1,0 +1,14 @@
+{
+  "__GENERATED_FILE_DO_NOT_MODIFY_MANUALLY": -46131178,
+  "all-cabal-hashes": "https://raw.githubusercontent.com/commercialhaskell/all-cabal-hashes/d978f8fc7fb16cf802e0d10abae8566f0f21ee3c",
+  "resolved": {
+    "base": {"dependencies":[],"location":{"type":"core"},"name":"base","version":"4.14.3.0"},
+    "bytestring": {"dependencies":[],"location":{"type":"core"},"name":"bytestring","version":"0.10.12.0"},
+    "containers": {"dependencies":[],"location":{"type":"core"},"name":"containers","version":"0.6.5.1"},
+    "deepseq": {"dependencies":[],"location":{"type":"core"},"name":"deepseq","version":"1.4.4.0"},
+    "mtl": {"dependencies":[],"location":{"type":"core"},"name":"mtl","version":"2.2.2"},
+    "random": {"dependencies":["base","bytestring","deepseq","mtl","splitmix"],"location":{"type":"hackage","url":"https://hackage.haskell.org/package/random-1.2.0/random-1.2.0.tar.gz"},"name":"random","pinned":{"url":["https://hackage.haskell.org/package/random-1.2.0/random-1.2.0.tar.gz","https://s3.amazonaws.com/hackage.fpcomplete.com/package/random-1.2.0.tar.gz"],"sha256":"e4519cf7c058bfd5bdbe4acc782284acc9e25e74487208619ca83cbcd63fb9de","cabal-sha256":"195506fedaa7c31c1fa2a747e9b49b4a5d1f0b09dd8f1291f23a771656faeec3"},"version":"1.2.0"},
+    "splitmix": {"dependencies":["base","deepseq"],"location":{"type":"hackage","url":"https://hackage.haskell.org/package/splitmix-0.1.0.4/splitmix-0.1.0.4.tar.gz"},"name":"splitmix","pinned":{"url":["https://hackage.haskell.org/package/splitmix-0.1.0.4/splitmix-0.1.0.4.tar.gz","https://s3.amazonaws.com/hackage.fpcomplete.com/package/splitmix-0.1.0.4.tar.gz"],"sha256":"6d065402394e7a9117093dbb4530a21342c9b1e2ec509516c8a8d0ffed98ecaa","cabal-sha256":"714a55fd28d3e2533bd5b49e74f604ef8e5d7b06f249c8816f6c54aed431dcf1"},"version":"0.1.0.4"},
+    "text": {"dependencies":[],"location":{"type":"core"},"name":"text","version":"1.2.4.1"}
+  }
+}
