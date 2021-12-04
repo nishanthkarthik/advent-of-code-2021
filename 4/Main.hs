@@ -1,7 +1,6 @@
 import qualified Data.Text.Lazy as Text
-import qualified Control.Monad
 import qualified Data.List as List
-import qualified Data.Function as Function
+import qualified Data.Function as Function (on)
 import qualified Data.IntSet as IntSet
 
 type Matrix = [[Int]]
@@ -29,31 +28,35 @@ asMatchSets = map (\it -> (rowSets it) ++ rowSets (List.transpose it))
 findFirstOf :: (a -> Bool) -> [a] -> Int
 findFirstOf cond xs = fst . head . filter (\(_, it) -> cond it) $ zip [0..] xs
 
-solve1 :: Input -> [Matrix] -> Int
-solve1 input matrices = (input !! bingoIdx) * (sum $ IntSet.toList p1Set)
+solution :: Input -> [[IntSet.IntSet]] -> Int -> Int -> Int
+solution input matchSets bingoIdx boardIdx = (input !! bingoIdx) * (sum $ IntSet.toList setDiff)
     where
-        matchSets = asMatchSets matrices
-        isBingoMatch = (\it -> map (map (flip (IntSet.isSubsetOf) it)) matchSets)
-        matches = map isBingoMatch $ map IntSet.fromList $ tail $ List.inits input
+        l = foldl1 (IntSet.union) $ matchSets !! boardIdx
+        r = IntSet.fromList $ take (1 + bingoIdx) input
+        setDiff = IntSet.difference l r
+
+solve1 :: Input -> [[[Bool]]] -> (Int, Int)
+solve1 input matches = (bingoIdx, boardIdx)
+    where
         bingoIdx = findFirstOf (id) $ map ((any id) . concat) matches
         boardIdx = findFirstOf (any id) $ matches !! bingoIdx
-        p1Set = IntSet.difference (foldl1 (IntSet.union) $ matchSets !! boardIdx) (IntSet.fromList $ take (1 + bingoIdx) input)
 
-solve2 :: Input -> [Matrix] -> Int
-solve2 input matrices = (input !! bingoIdx) * (sum $ IntSet.toList p2Set)
+solve2 :: Input -> [[[Bool]]] -> (Int, Int)
+solve2 input matches = (bingoIdx, boardIdx)
     where
-        matchSets = asMatchSets matrices
-        isBingoMatch = (\it -> map (map (flip (IntSet.isSubsetOf) it)) matchSets)
-        matches = map isBingoMatch $ map IntSet.fromList $ tail $ List.inits input
         winStates = map (map $ any id) matches
         allButOneWon = takeWhile (any not) winStates
         bingoIdx = length allButOneWon
         boardIdx = findFirstOf (not) $ last allButOneWon
-        p2Set = IntSet.difference (foldl1 (IntSet.union) $ matchSets !! boardIdx) (IntSet.fromList $ take (1 + bingoIdx) input)
 
 main :: IO ()
 main = do
     (input, matrices) <- readInput "4/input.txt"
-    print (solve1 input matrices)
-    print (solve2 input matrices)
+    let matchSets = asMatchSets matrices
+        isBingoMatch = (\it -> map (map (flip (IntSet.isSubsetOf) it)) matchSets)
+        matches = map isBingoMatch $ map IntSet.fromList $ tail $ List.inits input
+        s1 = uncurry (solution input matchSets) $ solve1 input matches
+        s2 = uncurry (solution input matchSets) $ solve2 input matches
+    print s1
+    print s2
     return ()
