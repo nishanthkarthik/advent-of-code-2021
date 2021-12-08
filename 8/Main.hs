@@ -36,12 +36,6 @@ readInput f = do
     text <- readFile f
     return (fromRight [] $ parse parser "" $ pack text)
 
-withLength :: Int -> [Digit] -> Digit
-withLength n xs = head $ filter ((== n) . length) xs
-
-hasCardinality :: Int -> String -> String
-hasCardinality n xs = [(head . head . filter (\i -> n == length i)) $ group $ sort xs]
-
 solve :: [Digit] -> [(String, String)]
 solve xs = zip [a,b,c,d,e,f,g] (map (: []) ['a'..'g'])
     where
@@ -54,10 +48,11 @@ solve xs = zip [a,b,c,d,e,f,g] (map (: []) ['a'..'g'])
         d = withLength 4 xs \\ (b ++ c ++ f)
         g = hasCardinality 7 (union \\ (concat $ replicate 7 d))
 
-testArr = words "acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab"
+        withLength :: Int -> [Digit] -> Digit
+        withLength n xs = head $ filter ((== n) . length) xs
 
-mapDefault :: [(String, String)] -> String -> String
-mapDefault table input = concat $ map (\it -> fromJust $ lookup (it : []) table) input
+        hasCardinality :: Int -> String -> String
+        hasCardinality n xs = [(head . head . filter (\i -> n == length i)) $ group $ sort xs]
 
 solveDigit :: ([Digit], [Digit]) -> Int
 solveDigit (ref, input) = digitsToNum $ map (fromJust . (flip elemIndex refArr) . sort . (mapDefault table)) input
@@ -65,6 +60,9 @@ solveDigit (ref, input) = digitsToNum $ map (fromJust . (flip elemIndex refArr) 
         refArr = ["abcefg", "cf", "acdeg", "acdfg", "bcdf", "abdfg", "abdefg", "acf", "abcdefg", "abcdfg"]
         table = solve ref
         digitsToNum = foldl (\acc it -> acc * 10 + it) 0
+
+        mapDefault :: [(String, String)] -> String -> String
+        mapDefault table input = concat $ map (\it -> fromJust $ lookup (it : []) table) input
 
 main :: IO ()
 main = do
