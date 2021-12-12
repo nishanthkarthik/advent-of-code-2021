@@ -29,11 +29,12 @@ load("@rules_haskell//haskell:cabal.bzl", "stack_snapshot")
 stack_snapshot(
     name = "stackage",
     packages = [
+        "array",
         "base",
         "containers",
-        "text",
-        "random",
         "megaparsec",
+        "random",
+        "text",
     ],
     snapshot = "lts-18.18",
     stack_snapshot_json = "//tooling:stackage_snapshot.json",
