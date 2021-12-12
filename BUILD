@@ -7,4 +7,5 @@ STACKAGE_PACKAGES = ["base", "text", "containers", "megaparsec", "array"]
     srcs = ["{}/Main.hs".format(i)],
     deps = ["@stackage//:{}".format(pkg) for pkg in STACKAGE_PACKAGES],
     data = ["{}/input.txt".format(i)],
-) for i in range(1, 1 + 11)]
+    ghcopts = ["-O2"],
+) for i in range(1, 1 + 12)]
