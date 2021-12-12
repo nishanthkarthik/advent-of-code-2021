@@ -34,16 +34,14 @@ visitor2 visited neighbors = upper ++ lowerVisits
           alreadyVisitedALowerTwice = (length visitedLower) /= (length $ nubOrd visitedLower)
           lowerVisits = if alreadyVisitedALowerTwice then (lower \\ visited) else lower
 
--- Adj list -> Visitor -> Visited -> Cur -> Path
-bfs :: [(String, String)] -> Visitor -> [String] -> String -> [[String]]
+-- Adj list -> Visitor -> Visited -> Cur -> PathCount
+bfs :: [(String, String)] -> Visitor -> [String] -> String -> Int
 bfs graph visitor visited cur
-    | cur == "end" = [reverse (cur : visited)]
-    | otherwise = concatMap (bfs graph visitor (cur : visited)) visits
+    | cur == "end" = 1
+    | otherwise = sum $ map (bfs graph visitor (cur : visited)) visits
     where
         neighbors = map snd $ filter ((== cur) . fst) graph
         visits = visitor (cur : visited) neighbors
-
-testGraph = [("start", "A"), ("start", "b"), ("A", "b"), ("A", "end"), ("b", "end")]
 
 readInput :: String -> IO [(String, String)]
 readInput f = do
@@ -57,5 +55,5 @@ main = do
         undirected :: [(String, String)] -> [(String, String)]
         undirected xs = xs ++ map swap xs
 
-    print $ length (bfs graph visitor1 [] "start")
-    print $ length (bfs graph visitor2 [] "start")
+    print $ bfs graph visitor1 [] "start"
+    print $ bfs graph visitor2 [] "start"
