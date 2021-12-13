@@ -55,14 +55,13 @@ foldT (axis, pos)
     | axis == 'y' = foldY pos
 
 visualizeGrid :: [Dot] -> [Text]
-visualizeGrid dots = chunksOf width $ pack base
+visualizeGrid dots = chunksOf (maxX + 1) $ pack base
     where
         maxX = foldl1 max $ map fst dots
         maxY = foldl1 max $ map snd dots
-        width = maxY + 1
         set = fromList dots
-        generator it = if (member it set) then '#' else '.'
-        base = map generator [(x, y) | x <- [0..maxX], y <- [0..maxY]]
+        generator it = if (member it set) then '#' else ' '
+        base = map generator [(x, y) | y <- [0..maxY], x <- [0..maxX]]
 
 main :: IO ()
 main = do
