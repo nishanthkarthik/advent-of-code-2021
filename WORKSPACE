@@ -35,6 +35,7 @@ stack_snapshot(
         "megaparsec",
         "random",
         "text",
+        "heap",
     ],
     snapshot = "lts-18.18",
     stack_snapshot_json = "//tooling:stackage_snapshot.json",
