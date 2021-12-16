@@ -1,6 +1,6 @@
 {
-  "__GENERATED_FILE_DO_NOT_MODIFY_MANUALLY": -1499042257,
-  "all-cabal-hashes": "https://raw.githubusercontent.com/commercialhaskell/all-cabal-hashes/1ad621293ff8c7c6b19ee7726d29c06cd8a74cc1",
+  "__GENERATED_FILE_DO_NOT_MODIFY_MANUALLY": 1396044176,
+  "all-cabal-hashes": "https://raw.githubusercontent.com/commercialhaskell/all-cabal-hashes/a099f860682fb85c2237e89b5bcc55d5dd9359aa",
   "resolved": {
     "array": {"dependencies":[],"location":{"type":"core"},"name":"array","version":"0.5.4.0"},
     "base": {"dependencies":[],"location":{"type":"core"},"name":"base","version":"4.14.3.0"},
