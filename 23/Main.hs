@@ -6,16 +6,16 @@ import Control.Parallel.Strategies
 
 type State = Array Int [Char]
 
-reference = listArray (0, 10) ["", "", "AA", "", "BB", "", "CC", "", "DD", "", ""]
+reference = listArray (0, 10) ["", "", "AAAA", "", "BBBB", "", "CCCC", "", "DDDD", "", ""]
 
-testData = listArray (0, 10) ["", "", "BA", "", "CD", "", "BC", "", "DA", "", ""] :: State
+stackDepth = 4
 
 pathLength :: State -> Int -> Int -> Int
 pathLength state from to
-    | from `elem` [2,4..8] = abs (to - from) + stackLength (state ! from)
+    | from `elem` [2,4..8] = abs (to - from) + stackLength
     | otherwise = abs (to - from) + holeLength
-    where stackLength arr = if length arr == 2 then 1 else 2
-          holeLength = 2 - length (state ! to)
+    where stackLength = stackDepth + 1 - length (state ! from)
+          holeLength = stackDepth - length (state ! to)
 
 podCost :: Char -> Int
 podCost 'A' = 1
@@ -29,8 +29,7 @@ destinationMapping x = (fromJust . lookup x) [('A', 2), ('B', 4), ('C', 6), ('D'
 stackToHole :: State -> Int -> [(Int, Int, Int)]
 stackToHole state n
     | null (state ! n) = []
-    | length (state ! n) == 1 && head (state ! n) `elem` (reference ! n) = []
-    | (state ! n) == (reference ! n) = []
+    | all (== head (reference ! n)) (state ! n) = []
     | otherwise = zip3 (repeat n) allstates (map ((* cost) . pathLength state n) allstates)
     where
         holes = [0..10] \\ [2, 4, 6, 8]
@@ -48,11 +47,12 @@ holeToStack state n
     | null (state ! n) = Nothing
     | not (clearPath && (emptyDest || sameInDest)) = Nothing
     | otherwise = Just (n, dest, multiplier * distance)
-    where dest = destinationMapping (head (state ! n))
+    where holeChar = head $ state ! n
+          dest = destinationMapping holeChar
           clearPath = all (null . (state !)) (path \\ [2,4..8])
           path = if n < dest then [n+1..dest-1] else [dest+1..n-1]
           emptyDest = null (state ! dest)
-          sameInDest = (state ! dest) == (state ! n)
+          sameInDest = all (== holeChar) (state ! dest)
           multiplier = podCost . head $ state ! n
           distance = pathLength state n dest
 
@@ -73,6 +73,6 @@ step state score
 
 main :: IO ()
 main = do
-    let input = listArray (0, 10) ["", "", "DC", "", "CA", "", "DA", "", "BB", "", ""]
+    let input = listArray (0, 10) ["", "", "DDDC", "", "CCBA", "", "DBAA", "", "BACB", "", ""]
         cost = step input 0
     print cost

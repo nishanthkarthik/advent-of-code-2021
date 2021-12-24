@@ -7,5 +7,5 @@ STACKAGE_PACKAGES = ["base", "text", "containers", "megaparsec", "array", "heap"
     srcs = ["{}/Main.hs".format(i)],
     deps = ["@stackage//:{}".format(pkg) for pkg in STACKAGE_PACKAGES],
     data = ["{}/input.txt".format(i)],
-    ghcopts = ["-O2", "-threaded", "-rtsopts", "-with-rtsopts=-N12"],
+    ghcopts = ["-O2", "-threaded", "-rtsopts", "-with-rtsopts=-N12 -H2G"],
 ) for i in range(1, 1 + 23)]
